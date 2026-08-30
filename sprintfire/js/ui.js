@@ -216,7 +216,22 @@ const UI = (() => {
       else if (c.exhausted) title += ' — exhausted';
       else if (m.isAI && c.offline) title += ' — offline';
       btn.title = title;
-      btn.innerHTML = `<span class="commitbar-avatar" style="background:${m.color}">${esc(m.symbol)}</span><span class="commitbar-name">${esc(m.name)}</span>`;
+      const cap = Game.memberCap(state, m.id);
+      const load = Game.currentLoad(state, m.id);
+      const loadTxt = `${load}/${Math.round(cap)}`;
+      let gauge = '';
+      if (m.isAI) {
+        const ratio = c.tokensUsed / CONFIG.novaTokenBudget;
+        const pct = Math.min(100, ratio * 100);
+        const danger = ratio >= CONFIG.novaTokenWarnPct;
+        gauge = `<div class="commitbar-gauge ai${danger ? ' danger' : ''}"><div class="commitbar-gauge-fill" style="width:${pct}%"></div></div>`;
+      } else {
+        const ratio = cap > 0 ? load / cap : 0;
+        const danger = c.wellbeing <= CONFIG.quitEventBaseThresh || ratio >= CONFIG.heavyLoadRatio;
+        const pct = Math.min(100, c.wellbeing);
+        gauge = `<div class="commitbar-gauge${danger ? ' danger' : ''}"><div class="commitbar-gauge-fill" style="width:${pct}%"></div></div>`;
+      }
+      btn.innerHTML = `<span class="commitbar-avatar" style="background:${m.color}">${esc(m.symbol)}</span><span class="commitbar-name">${esc(m.name)}</span><span class="commitbar-meta">${loadTxt}</span>${gauge}`;
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!state.selected) { toast('Pick a ticket first', 'warn'); return; }
@@ -227,6 +242,19 @@ const UI = (() => {
     bar.appendChild(inner);
     bar.appendChild(el('div', 'commitbar-hint', hasSel ? 'Tap a teammate to assign' : 'Pick a ticket, then tap a teammate'));
     return bar;
+  }
+
+  function syncSelection(state) {
+    const sel = state.selected;
+    document.querySelectorAll('.backlog .ticket').forEach((card) => {
+      card.classList.toggle('selected', card.dataset.tid === sel);
+    });
+    const bar = document.querySelector('.commitbar');
+    if (bar) {
+      bar.classList.toggle('has-selection', !!sel);
+      const hint = bar.querySelector('.commitbar-hint');
+      if (hint) hint.textContent = sel ? 'Tap a teammate to assign' : 'Pick a ticket, then tap a teammate';
+    }
   }
 
   // ---------- layout ----------
@@ -259,8 +287,8 @@ const UI = (() => {
 
     // clicking empty backdrop deselects
     app.addEventListener('click', (e) => {
-      if (!e.target.closest('.ticket') && !e.target.closest('.member')) {
-        if (state.selected) { state.selected = null; render(state); }
+      if (!e.target.closest('.ticket') && !e.target.closest('.member') && !e.target.closest('.commitbar')) {
+        if (state.selected) { state.selected = null; syncSelection(state); }
       }
     });
   }
@@ -302,5 +330,5 @@ const UI = (() => {
     setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 4200);
   }
 
-  return { render, showModal, hideModal, toast, el };
+  return { render, syncSelection, showModal, hideModal, toast, el };
 })();
