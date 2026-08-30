@@ -51,6 +51,7 @@ function startIntro() {
 // ---------- App actions ----------
 App.selectTicket = (id) => {
   if (state.phase === 'over') return;
+  const prev = state.selected;
   if (String(id).startsWith('BUG-')) {
     const b = state.bugs.find((x) => x.id === id);
     if (!b) return;
@@ -58,7 +59,12 @@ App.selectTicket = (id) => {
   } else {
     Game.selectTicket(state, id);
   }
-  save(); UI.render(state);
+  save();
+  if (document.querySelector('.backlog .ticket')) {
+    UI.syncSelection(state);
+  } else {
+    UI.render(state);
+  }
 };
 
 App.assignSelected = (memberId) => {

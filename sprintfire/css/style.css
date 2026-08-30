@@ -111,7 +111,6 @@ body {
 .ticket.selected {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent-soft);
-  transform: translateY(-1px);
 }
 .ticket.locked { opacity: .5; cursor: not-allowed; }
 .ticket.bug { border-left: 3px solid var(--bad); }
@@ -219,7 +218,7 @@ body {
 
 /* ---------------- toasts ---------------- */
 @media (max-width: 900px) {
-  .app { padding-bottom: 96px; }
+  .app { padding-bottom: 122px; }
   .commitbar {
     display: flex;
     flex-direction: column;
@@ -229,8 +228,9 @@ body {
     z-index: 40;
     background: var(--navy-2);
     border-top: 1px solid var(--line);
-    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
     box-shadow: 0 -4px 16px rgba(16,26,48,.08);
+    min-height: 88px;
   }
   .commitbar.has-selection {
     border-top-color: var(--accent);
@@ -246,8 +246,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 8px 4px;
+    gap: 3px;
+    padding: 6px 4px;
     border-radius: 10px;
     border: 1px solid var(--line);
     background: var(--navy-2);
@@ -265,18 +265,37 @@ body {
   }
   .commitbar-avatar {
     display: grid; place-items: center;
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    color: #fff; font-size: 16px; font-weight: 700;
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    color: #fff; font-size: 15px; font-weight: 700;
   }
   .commitbar-name {
-    font-size: 11px; font-weight: 700;
+    font-size: 10.5px; font-weight: 700;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     max-width: 100%;
+    line-height: 1;
   }
+  .commitbar-meta {
+    font-size: 10px; font-weight: 700; color: var(--ink);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .commitbar-gauge {
+    width: 100%; height: 4px;
+    background: var(--navy-3); border-radius: 999px; overflow: hidden;
+  }
+  .commitbar-gauge-fill {
+    height: 100%; border-radius: 999px; transition: width .3s;
+    background: var(--accent);
+  }
+  .commitbar-gauge.danger .commitbar-gauge-fill { background: var(--bad); }
+  .commitbar-gauge.ai .commitbar-gauge-fill { background: var(--ai); }
+  .commitbar-gauge.ai.danger .commitbar-gauge-fill { background: var(--bad); }
   .commitbar-hint {
     text-align: center;
     font-size: 11px; color: var(--muted);
+    line-height: 1; min-height: 12px;
+    white-space: nowrap;
   }
   .commitbar.has-selection .commitbar-hint { color: var(--accent); font-weight: 600; }
 }
