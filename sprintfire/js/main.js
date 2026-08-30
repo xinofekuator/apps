@@ -8,6 +8,8 @@ const App = {};
 
 let state = Game.newGame();
 
+function track(name, params) { if (typeof gtag === 'function') gtag('event', name, params); }
+
 function save() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch (e) {}
 }
@@ -87,12 +89,14 @@ App.endSprint = () => {
   if (state.phase === 'over') return;
   const result = Game.endSprint(state);
   save();
+  track('sprint_end', { sprint: state.sprint });
   reportSprint(result);
 };
 
 App.newGame = () => {
   state = Game.newGame();
   save();
+  track('game_start');
   UI.render(state);
   startIntro();
 };
@@ -180,6 +184,7 @@ function reportSprint(result) {
     // Final message: no hints, no %, no tips — just the verdict and the facts.
     const e = state.ending;
     const sur = factLines(result, m);
+    track('game_end', { ending: e.title, win: e.win, stars: e.stars });
     UI.render(state);
     UI.showModal({
       title: e.title,
@@ -223,6 +228,7 @@ function boot() {
     localStorage.removeItem(SAVE_KEY);
   }
   UI.render(state);
+  track('game_start');
   startIntro();
   window.addEventListener('beforeunload', save);
 }
