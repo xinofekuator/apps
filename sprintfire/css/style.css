@@ -29,6 +29,9 @@ body {
 
 .app { max-width: 1280px; margin: 0 auto; padding: 16px; }
 
+/* commit bar — mobile sticky teammate bar (hidden on desktop) */
+.commitbar { display: none; }
+
 /* ---------------- top bar ---------------- */
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
@@ -215,6 +218,69 @@ body {
 .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
 
 /* ---------------- toasts ---------------- */
+@media (max-width: 900px) {
+  .app { padding-bottom: 96px; }
+  .commitbar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 40;
+    background: var(--navy-2);
+    border-top: 1px solid var(--line);
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 16px rgba(16,26,48,.08);
+  }
+  .commitbar.has-selection {
+    border-top-color: var(--accent);
+    box-shadow: 0 -4px 20px rgba(51,133,255,.18);
+  }
+  .commitbar-inner {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+  }
+  .commitbar-member {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--navy-2);
+    font: inherit;
+    cursor: pointer;
+    min-width: 0;
+  }
+  .commitbar-member:not(.disabled):active { transform: scale(.97); }
+  .commitbar-member.disabled {
+    opacity: .45;
+    cursor: not-allowed;
+  }
+  .commitbar.has-selection .commitbar-member:not(.disabled) {
+    border-color: var(--accent);
+  }
+  .commitbar-avatar {
+    display: grid; place-items: center;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    color: #fff; font-size: 16px; font-weight: 700;
+  }
+  .commitbar-name {
+    font-size: 11px; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .commitbar-hint {
+    text-align: center;
+    font-size: 11px; color: var(--muted);
+  }
+  .commitbar.has-selection .commitbar-hint { color: var(--accent); font-weight: 600; }
+}
+
 .toasts { position: fixed; bottom: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 60; max-width: 320px; }
 .toast {
   background: var(--navy-3); border: 1px solid var(--line); border-left: 3px solid var(--accent);

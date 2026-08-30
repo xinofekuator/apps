@@ -200,6 +200,35 @@ const UI = (() => {
     return board;
   }
 
+  // ---------- commit bar (mobile) ----------
+  function commitBar(state) {
+    const hasSel = !!state.selected;
+    const bar = el('div', 'commitbar' + (hasSel ? ' has-selection' : ''));
+    const inner = el('div', 'commitbar-inner');
+    for (const m of TEAM) {
+      const c = state.crew[m.id];
+      const can = Game.canWork(state, m.id);
+      const btn = el('button', 'commitbar-member' + (can ? '' : ' disabled'));
+      btn.dataset.member = m.id;
+      btn.disabled = !can;
+      let title = m.name;
+      if (c.quit) title += ' — QUIT';
+      else if (c.exhausted) title += ' — exhausted';
+      else if (m.isAI && c.offline) title += ' — offline';
+      btn.title = title;
+      btn.innerHTML = `<span class="commitbar-avatar" style="background:${m.color}">${esc(m.symbol)}</span><span class="commitbar-name">${esc(m.name)}</span>`;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!state.selected) { toast('Pick a ticket first', 'warn'); return; }
+        App.assignSelected(m.id);
+      });
+      inner.appendChild(btn);
+    }
+    bar.appendChild(inner);
+    bar.appendChild(el('div', 'commitbar-hint', hasSel ? 'Tap a teammate to assign' : 'Pick a ticket, then tap a teammate'));
+    return bar;
+  }
+
   // ---------- layout ----------
   function mainLayout(state) {
     const wrap = el('div', 'main-wrap');
@@ -214,6 +243,7 @@ const UI = (() => {
     app.innerHTML = '';
     app.appendChild(topBar(state));
     app.appendChild(mainLayout(state));
+    app.appendChild(commitBar(state));
 
     // bind global actions
     app.querySelectorAll('[data-action="endsprint"]').forEach((b) => b.addEventListener('click', App.endSprint));
