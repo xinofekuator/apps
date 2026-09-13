@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 MEXICANOS DIJERON — Fiesta Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-20X8RLX5BQ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);} gtag('js',new Date()); gtag('config','G-20X8RLX5BQ');</script>
+</head>
+<body>
+<header class="topbar">
+  <a class="topbar-home" href="../">← Apps</a>
+  <div class="topbar-title">
+    <span class="topbar-fiesta">100 MEXICANOS DIJERON</span>
+    <span class="topbar-sub">Fiesta Edition · TV Scoreboard</span>
+  </div>
+  <div class="topbar-right">
+    <button id="btnNewGame" class="btn btn-ghost btn-sm">New game</button>
+    <button id="btnMute" class="btn btn-ghost btn-sm" aria-label="Mute">🔊</button>
+  </div>
+</header>
+
+<div id="scoreStrip" class="score-strip"></div>
+
+<main class="stage">
+  <!-- SETUP -->
+  <section id="viewSetup" class="view">
+    <div class="setup-card">
+      <h1 class="fiesta-title">100 MEXICANOS<br>DIJERON</h1>
+      <p class="fiesta-by">by Yoss &amp; Ignacio · Mexican Independence Party 2026 🇲🇽</p>
+      <p class="fiesta-sub">Create your teams · Host controls the big screen · Everyone scores on paper</p>
+      <div id="teamEditor" class="team-editor"></div>
+      <div class="setup-actions">
+        <button id="btnAddTeam" class="btn btn-ghost">+ Add team</button>
+        <button id="btnStartGame" class="btn btn-primary btn-lg">Start fiesta →</button>
+      </div>
+      <p class="setup-hint">Tip: 4 teams works great. Teams write their top 3 answers on paper each round. Host awards points by tapping team icons after each reveal.</p>
+      <div class="how-box">
+        <h3>How to play</h3>
+        <ol>
+          <li><b>90s debate</b> — read the question, all teams talk at once.</li>
+          <li><b>Write top 3</b> secretly on your sheet (1 = best guess).</li>
+          <li><b>¡Tiempo!</b> — everyone shows their sheet, then reveal answers on TV <b>lowest → highest</b>.</li>
+          <li>Tap a team's icon on the revealed answer to award its points (tap again to undo). <b>#1 = 50 · #2 = 30 · #3 = 20 · #4 = 10 · #5 = 5</b></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOBBY / QUESTION PICK -->
+  <section id="viewLobby" class="view hidden">
+    <div class="lobby-head">
+      <h2>Pick a question</h2>
+      <p>All teams play at once — 90s debate, write top 3, then reveal on TV.</p>
+    </div>
+    <div id="questionGrid" class="question-grid"></div>
+    <div class="lobby-actions">
+      <button id="btnFinish" class="btn btn-primary btn-lg">Show winners → Podium</button>
+      <span class="lobby-hint">Reveal 5 → 50 pts last. Tap team icons on each answer to award points.</span>
+    </div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="viewPlay" class="view hidden">
+    <div class="play-card">
+      <div class="play-top">
+        <div class="play-qhead">
+          <span id="playQNum" class="play-qnum"></span>
+          <h2 id="playQText" class="play-qtext"></h2>
+          <p id="playQHint" class="play-qhint"></p>
+        </div>
+
+        <div id="timerBox" class="timer-box timer-compact">
+          <div class="timer-ring">
+            <svg viewBox="0 0 100 100"><circle class="timer-bg" cx="50" cy="50" r="44"/><circle id="timerFg" class="timer-fg" cx="50" cy="50" r="44"/></svg>
+            <div id="timerNum" class="timer-num">90</div>
+          </div>
+          <div class="timer-side">
+            <div class="timer-controls">
+              <button id="btnTimerStart" class="btn btn-primary">Start 90s</button>
+              <button id="btnTimerPause" class="btn btn-ghost">Pause</button>
+              <button id="btnTimerReset" class="btn btn-ghost">Reset</button>
+            </div>
+            <div id="timerLabel" class="timer-label">Press Start — all teams debate!</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="revealArea" class="reveal-area">
+        <div class="reveal-head">
+          <h3>Answers — bottom → top (5 → 50)</h3>
+          <span class="reveal-hint">Uncovers from the <b>bottom</b> upward · Tap <b>Reveal next</b>, then tap team icons to award / undo</span>
+        </div>
+        <div id="answerList" class="answer-list"></div>
+        <div class="reveal-actions">
+          <button id="btnRevealNext" class="btn btn-primary btn-lg">Reveal next ↑ (bottom → top)</button>
+          <button id="btnBackLobby" class="btn btn-ghost">← Back to questions</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PODIUM -->
+  <section id="viewPodium" class="view hidden">
+    <div class="podium-card">
+      <h1 class="podium-title">¡GANADORES!</h1>
+      <p class="podium-sub">100 MEXICANOS DIJERON — Fiesta Edition</p>
+      <div id="podiumBoard" class="podium-board"></div>
+      <div id="podiumList" class="podium-list"></div>
+      <div class="podium-actions">
+        <button id="btnPodiumLobby" class="btn btn-ghost">← Back to questions</button>
+        <button id="btnPodiumNew" class="btn btn-primary">New game</button>
+      </div>
+    </div>
+    <div id="confetti" class="confetti"></div>
+  </section>
+</main>
+
+<div id="toastRoot" class="toast-root"></div>
+
+<div id="lockOverlay" class="lock-overlay">
+  <div class="lock-card">
+    <div class="lock-icon">🇲🇽</div>
+    <h1 class="lock-title">100 MEXICANOS DIJERON</h1>
+    <p class="lock-sub">Host only · Mexican Independence Party 2026</p>
+    <p class="lock-hint">Enter the passcode to unlock the TV scoreboard</p>
+    <div class="lock-input-row">
+      <input id="lockInput" class="lock-input" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false">
+      <button id="lockBtn" class="btn btn-primary">Unlock →</button>
+    </div>
+    <p class="lock-foot">Guests: go back to your table — no need to open this 😉</p>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
