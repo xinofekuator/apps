@@ -91,7 +91,7 @@ function showTitle() {
   UI.showModal({
     title: 'KORTTI',
     fi: 'the pink licence — 100 points to pass every exam',
-    body: 'Start 85 → need 100.\n\n✓ Right +8 · ✗ Wrong -12 · Trick -5 · Coin +1 · Boost +1 / 8s clean\nStay in lane A or B to answer — or TAP ↑ to lock in early (holding ↑ for speed won’t lock). Middle = wrong.\nCrash -10 to -18 (×2 if boosting) → 0 = BOOM.\n\n← → lane · hold ↑ boost · tap ↑ lock · R retry · P pause · M mute',
+    body: 'Start 90 → need 100.\n\n✓ Right +8 · ✗ Wrong -12 · Coin +1 · Boost +1 / 8s clean\nStay in lane A or B to answer — or TAP ↑ to lock in early (holding ↑ for speed won’t lock). Middle = wrong.\nCrash -10 to -18 (×2 if boosting) → 0 = BOOM.\n\n← → lane · hold ↑ boost · tap ↑ lock · R retry · P pause · M mute',
     takeaway: '2 right answers + a few coins/boosts = pass. Clean driving matters.',
     win: false,
     actions: (hasSave ? [

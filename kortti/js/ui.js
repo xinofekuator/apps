@@ -881,7 +881,7 @@ const UI = (() => {
     ctx.fillStyle = p >= 1 ? '#ffd23f' : '#ffb23f';
     ctx.font = '800 13px Inter, sans-serif';
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    ctx.fillText('▲ 1.5×', 18, 25);
+    ctx.fillText('▲ ' + CONFIG.boost.mult.toFixed(2).replace(/\.00$/,'').replace(/0$/,'') + '×', 18, 25);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 10px Inter, sans-serif';
     ctx.fillText(p >= 1 ? '+1 READY' : '+1 in ' + Math.max(0, Math.ceil(CONFIG.boost.bonusEvery - r.boostT)) + 's', 78, 25);
