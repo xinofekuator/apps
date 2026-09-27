@@ -1,7 +1,6 @@
 const CONFIG = {
   saveVersion: 4,
   saveKey: 'mexicanos-v1',
-  passcode: 'VIVAMEXICOLINDO',
   timerSeconds: 90,
   scoresByRank: [50, 30, 20, 10, 5],
   maxTeams: 8,

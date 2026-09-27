@@ -151,34 +151,7 @@ const Main = (() => {
     });
   }
 
-  function isUnlocked(){
-    try { return sessionStorage.getItem('mexicanos-unlocked') === '1'; } catch(e){ return false; }
-  }
-  function setUnlocked(){
-    try { sessionStorage.setItem('mexicanos-unlocked','1'); } catch(e){}
-  }
-  function showLock(){
-    const overlay=document.getElementById('lockOverlay');
-    if(overlay) overlay.style.display='flex';
-  }
-  function hideLock(){
-    const overlay=document.getElementById('lockOverlay');
-    if(overlay) overlay.style.display='none';
-  }
-  function tryUnlock(){
-    const inp=document.getElementById('lockInput');
-    const val=(inp && inp.value || '').trim();
-    if(val===CONFIG.passcode){
-      SFX.start(); SFX.ding();
-      setUnlocked(); hideLock();
-      bootApp();
-    } else {
-      SFX.buzz();
-      if(inp){ inp.value=''; inp.placeholder='Wrong — try again'; inp.classList.add('shake'); setTimeout(()=>inp.classList.remove('shake'),400); inp.focus(); }
-      UI.toast('Wrong passcode');
-    }
-  }
-  function bootApp(){
+  function boot(){
     const s=App.ensureState();
     SFX.setMuted(!!s.muted);
     const muteBtn=document.getElementById('btnMute');
@@ -190,19 +163,6 @@ const Main = (() => {
       if(hasScores) UI.renderLobby(s);
       else UI.renderSetup(s);
     } else UI.renderSetup(s);
-  }
-  function boot(){
-    if(!isUnlocked()){
-      showLock();
-      const btn=document.getElementById('lockBtn');
-      const inp=document.getElementById('lockInput');
-      if(btn) btn.addEventListener('click', tryUnlock);
-      if(inp) inp.addEventListener('keydown', (e)=>{ if(e.key==='Enter') tryUnlock(); });
-      // keep app hidden behind lock until unlocked
-      return;
-    }
-    hideLock();
-    bootApp();
   }
 
   document.addEventListener('DOMContentLoaded', boot);
