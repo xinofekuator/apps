@@ -219,15 +219,3 @@ a{color:inherit}
 .emoji-pop button{width:36px;height:36px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;cursor:pointer;font-size:18px}
 .emoji-pop button:hover{border-color:#f59e0b;background:#fffbeb}
 
-.lock-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:radial-gradient(800px 400px at 50% 0%, #fff7cc 0%, #ffedd5 30%, #fef3c7 60%, #fff7ed 100%);padding:20px}
-.lock-card{background:#fff;border:2px solid #f59e0b;border-radius:18px;padding:22px;max-width:520px;width:100%;text-align:center;box-shadow:0 18px 40px rgba(0,0,0,.12)}
-.lock-icon{font-size:36px;margin-bottom:4px}
-.lock-title{font-family:Bangers,Fredoka,sans-serif;font-size:32px;margin:0;color:#be123c;letter-spacing:.6px}
-.lock-sub{color:#64748b;font-weight:700;margin:2px 0 8px;font-size:13px;letter-spacing:.4px;text-transform:uppercase}
-.lock-hint{color:#475569;font-weight:600;margin:0 0 12px}
-.lock-input-row{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
-.lock-input{flex:1;min-width:180px;max-width:220px;border:2px solid #e2e8f0;border-radius:999px;padding:10px 14px;font-weight:800;font-size:15px;text-align:center;letter-spacing:1px}
-.lock-input:focus{outline:none;border-color:#f59e0b}
-.lock-input.shake{animation:shake .35s ease}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.lock-foot{color:#94a3b8;font-size:12px;margin:12px 0 0}
